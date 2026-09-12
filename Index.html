@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Das Feuer von Point Isolde — Kilian &amp; Alice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #0F1E33;
+    --navy-deep: #081221;
+    --sea: #4C7A78;
+    --brass: #B08D57;
+    --parchment: #EDE6D6;
+    --parchment-dim: #DDD3BC;
+    --ink: #1C1A16;
+    --coral: #C7522A;
+    --line: rgba(237,230,214,0.28);
+    --max-w: 720px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, .display{
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: inherit;
+  }
+
+  a{ color: inherit; }
+
+  :focus-visible{
+    outline: 2px solid var(--brass);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Hero ---------- */
+
+  .hero{
+    position: relative;
+    min-height: 100svh;
+    background: radial-gradient(120% 90% at 50% 8%, #16304C 0%, var(--navy) 45%, var(--navy-deep) 100%);
+    color: var(--parchment);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8vh 1.5rem 6vh;
+    overflow: hidden;
+  }
+
+  .hero__beam{
+    position: absolute;
+    top: -10%;
+    left: 50%;
+    width: 2600px;
+    height: 2600px;
+    margin-left: -1300px;
+    background: conic-gradient(from 200deg,
+      rgba(237,230,214,0) 0deg,
+      rgba(237,230,214,0.16) 8deg,
+      rgba(237,230,214,0) 20deg,
+      rgba(237,230,214,0) 360deg);
+    transform-origin: 50% 50%;
+    animation: sweep 14s ease-in-out infinite;
+  }
+
+  @keyframes sweep{
+    0%   { transform: rotate(-38deg); }
+    50%  { transform: rotate(18deg); }
+    100% { transform: rotate(-38deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .hero__beam{ animation: none; transform: rotate(-10deg); }
+  }
+
+  .hero__mast{
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero__eyebrow{
+    font-size: 0.95rem;
+    color: var(--brass);
+    margin: 0 0 1.4rem;
+    font-style: italic;
+  }
+
+  .hero h1{
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    line-height: 1.05;
+    margin: 0 0 1.2rem;
+  }
+
+  .hero p.lede{
+    max-width: 42ch;
+    margin: 0 auto;
+    font-size: 1.15rem;
+    color: var(--parchment-dim);
+  }
+
+  .hero__coords{
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    color: rgba(237,230,214,0.55);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- Route / timeline ---------- */
+
+  .route{
+    position: relative;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 7rem 1.5rem 4rem;
+  }
+
+  .route__spine{
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-image: linear-gradient(to bottom, var(--brass) 0 6px, transparent 6px 14px);
+    background-size: 2px 14px;
+    transform: translateX(-1px);
+  }
+
+  @media (max-width: 720px){
+    .route__spine{ left: 28px; }
+  }
+
+  .chapter{
+    position: relative;
+    width: calc(50% - 3rem);
+    margin-bottom: 6rem;
+  }
+
+  .chapter:nth-child(odd){ margin-left: 0; text-align: right; }
+  .chapter:nth-child(even){ margin-left: calc(50% + 3rem); text-align: left; }
+
+  .chapter:last-child{ margin-bottom: 0; }
+
+  @media (max-width: 720px){
+    .chapter, .chapter:nth-child(odd), .chapter:nth-child(even){
+      width: calc(100% - 70px);
+      margin-left: 70px;
+      text-align: left;
+    }
+  }
+
+  .chapter__pin{
+    position: absolute;
+    top: 0.4rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--brass);
+    box-shadow: 0 0 0 5px var(--parchment), 0 0 0 6px var(--line);
+  }
+
+  .chapter:nth-child(odd) .chapter__pin{ right: -3.53rem; }
+  .chapter:nth-child(even) .chapter__pin{ left: -3.53rem; }
+
+  @media (max-width: 720px){
+    .chapter:nth-child(odd) .chapter__pin,
+    .chapter:nth-child(even) .chapter__pin{
+      left: -42px;
+      right: auto;
+    }
+  }
+
+  .chapter__mark{
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--sea);
+    margin-bottom: 0.5rem;
+  }
+
+  .chapter h2{
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    margin: 0 0 0.9rem;
+  }
+
+  .chapter p{
+    margin: 0 0 0.9rem;
+    max-width: 46ch;
+  }
+
+  .chapter:nth-child(odd) p{ margin-left: auto; }
+  .chapter:nth-child(even) p{ margin-right: auto; }
+
+  @media (max-width: 720px){
+    .chapter p{ margin-left: 0 !important; margin-right: 0 !important; }
+  }
+
+  .chapter--vow{
+    text-align: center !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .chapter--vow .chapter__pin{
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+
+  @media (max-width: 720px){
+    .chapter--vow{ margin-left: 70px !important; width: calc(100% - 70px) !important; text-align: left !important; }
+    .chapter--vow .chapter__pin{ left: -42px; transform: none; }
+  }
+
+  .chapter--vow p{ margin-left: auto; margin-right: auto; }
+
+  .letter{
+    background: #fff;
+    border: 1px solid rgba(28,26,22,0.12);
+    padding: 1.3rem 1.5rem;
+    margin-top: 1.2rem;
+    font-style: italic;
+    color: #3a362e;
+    box-shadow: 3px 3px 0 rgba(28,26,22,0.06);
+  }
+
+  .chapter:nth-child(odd) .letter{ text-align: right; }
+  .chapter:nth-child(even) .letter{ text-align: left; }
+  @media (max-width: 720px){
+    .letter, .chapter:nth-child(odd) .letter{ text-align: left; }
+  }
+
+  /* ---------- Divider ---------- */
+
+  .tide{
+    display:block;
+    width: 100%;
+    height: 90px;
+  }
+
+  /* ---------- Epilogue ---------- */
+
+  .epilogue{
+    background: var(--navy-deep);
+    color: var(--parchment-dim);
+    text-align: center;
+    padding: 6rem 1.5rem 5rem;
+  }
+
+  .epilogue h2{
+    color: var(--parchment);
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    max-width: 20ch;
+    margin: 0 auto 1.3rem;
+  }
+
+  .epilogue p{
+    max-width: 48ch;
+    margin: 0 auto 0;
+  }
+
+  .epilogue__mark{
+    color: var(--brass);
+    font-style: italic;
+    margin-top: 2.2rem;
+    font-size: 0.95rem;
+  }
+
+  footer{
+    text-align: center;
+    padding: 2rem 1.5rem 2.5rem;
+    font-size: 0.85rem;
+    color: rgba(28,26,22,0.45);
+    background: var(--parchment);
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero__beam" aria-hidden="true"></div>
+  <div class="hero__mast">
+    <p class="hero__eyebrow">Eine Geschichte von zwei Ufern</p>
+    <h1>Das Feuer<br>von Point Isolde</h1>
+    <p class="lede">Wie ein Leuchtturmwärter und eine Kartografin sich über einem stürmischen Kanal fanden — und die Gezeiten lernten, auf sie zu warten.</p>
+    <p class="hero__coords">48°53′ N &nbsp;·&nbsp; 5°06′ W &nbsp;·&nbsp; seit jenem Novemberabend</p>
+  </div>
+</header>
+
+<main class="route">
+  <div class="route__spine" aria-hidden="true"></div>
+
+  <section class="chapter">
+    <span class="chapter__pin" aria-hidden="true"></span>
+    <span class="chapter__mark">I</span>
+    <h2>Das Licht im Nebel</h2>
+    <p>Kilian hütete das Feuer von Point Isolde seit sieben Jahren, meist allein mit dem Wind und dem Klicken der Drehmechanik über sich. In jener Novembernacht trieb ein Vermessungsschiff der Handelsgilde zu nah an die Klippen, seine Kompasse verwirrt vom Sturm. Alice stand am Bug, die Karten unter der Jacke vor der Gischt schützend, als sein Lichtstrahl zum ersten Mal über ihr Deck strich.</p>
+    <div class="letter">„Ich sah drei Blitze, dann Dunkelheit, dann wieder drei. Wie ein Herzschlag, der uns nach Hause zeigte.“</div>
+  </section>
+
+  <section class="chapter">
+    <span class="chapter__pin" aria-hidden="true"></span>
+    <span class="chapter__mark">II</span>
+    <h2>Karten und Briefe</h2>
+    <p>Der Schaden am Schiff hielt sie neun Tage auf der Insel fest. Alice zeichnete die zerklüftete Küste neu, Kilian zeigte ihr, welche Riffe bei Ebbe zum Vorschein kamen und welche log logen. Abends saßen sie am Fuß des Turms, tranken schwarzen Tee aus Blechtassen und sprachen, bis die Kerze herunterbrannte. Als ihr Schiff endlich ablegte, blieb ein Versprechen zurück: zu schreiben, jede Woche, gleich wie weit die See dazwischen läge.</p>
+    <div class="letter">„Beigelegt: eine Nachzeichnung der Nordklippe. Du wirst sehen, ich habe deinen Turm etwas höher gemalt, als er ist.“</div>
+  </section>
+
+  <section class="chapter">
+    <span class="chapter__pin" aria-hidden="true"></span>
+    <span class="chapter__mark">III</span>
+    <h2>Der lange Winter</h2>
+    <p>Von Januar bis März legte kein Boot mehr an — die See war zu wild, die Gilde hatte Alice ohnehin ins Festland zurückbeordert, um neue Karten für den Süden zu zeichnen. Die Briefe kamen unregelmäßig, manchmal drei auf einmal, manchmal keine drei Wochen lang. Kilian begann zu zweifeln, ob eine Kartografin mit halb Europa vor sich wirklich an einen Felsen zurückkehren würde. Er schrieb trotzdem weiter, jeden Sonntag, auch wenn die Antwort ausblieb.</p>
+    <div class="letter">„Wenn du dies liest, ist es Sonntag gewesen. Das Feuer brannte. Ich auch, ein wenig weniger sicher als sonst.“</div>
+  </section>
+
+  <section class="chapter">
+    <span class="chapter__pin" aria-hidden="true"></span>
+    <span class="chapter__mark">IV</span>
+    <h2>Die Flut kehrt zurück</h2>
+    <p>Im April erschien ein kleines Boot am Horizont, viel zu klein für die Gilde. Alice hatte es sich selbst geliehen, ohne Auftrag, ohne Karte, nur mit der Erinnerung an drei Lichtblitze. Sie ruderte die letzten hundert Meter selbst, gegen den Rat jedes erfahrenen Seemanns im Hafen. Kilian sah sie vom Turm aus lange bevor sie anlegte — und war schon halb den Klippenweg hinuntergelaufen, ehe er wusste, dass er sich bewegt hatte.</p>
+    <div class="letter">„Ich habe keine Ladung und keinen Auftrag. Nur die Frage, ob der Tee noch in derselben Dose ist.“</div>
+  </section>
+
+  <section class="chapter chapter--vow">
+    <span class="chapter__pin" aria-hidden="true"></span>
+    <span class="chapter__mark">V</span>
+    <h2>Das Versprechen bei Ebbe</h2>
+    <p>Sie heirateten dort, wo die Sandbank zweimal täglich aus dem Meer auftaucht und wieder verschwindet — nur eine Stunde lang begehbar, bevor die Flut sie zurückfordert. Ein Dutzend Fischer und der Pfarrer von der Nachbarinsel standen barfuß im nassen Sand, während Kilian und Alice sich versprachen, was das Meer ihnen gelehrt hatte: dass manches wiederkommt, wenn man es nur lange genug erwartet.</p>
+  </section>
+</main>
+
+<svg class="tide" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 L1440,90 L0,90 Z" fill="#0F1E33"></path>
+</svg>
+
+<section class="epilogue">
+  <h2>Heute stehen zwei Lichter am Kap</h2>
+  <p>Das eine dreht sich noch immer jede Nacht über der Bucht. Das andere hängt gerahmt in der Turmstube: Alice' letzte Karte von Point Isolde, in deren Ecke ein winziger Leuchtturm ein wenig zu hoch gezeichnet ist — mit Absicht, wie sie sagt, so wie sie ihn zum ersten Mal gesehen hat.</p>
+  <p class="epilogue__mark">— Ende —</p>
+</section>
+
+<footer>
+  Eine ausgedachte Geschichte. Point Isolde existiert nur zwischen diesen Zeilen.
+</footer>
+
+</body>
+  </html>
