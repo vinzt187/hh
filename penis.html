@@ -3,363 +3,606 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Das Feuer von Point Isolde — Der fette Kilian &amp; Alice</title>
+<title>Kilian &amp; Alice — Abteil 14</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy: #0F1E33;
-    --navy-deep: #081221;
-    --sea: #4C7A78;
-    --brass: #B08D57;
-    --parchment: #EDE6D6;
-    --parchment-dim: #DDD3BC;
-    --ink: #1C1A16;
-    --coral: #C7522A;
-    --line: rgba(237,230,214,0.28);
-    --max-w: 720px;
+    --ink:#22283A;
+    --paper:#F1E7D8;
+    --paper-deep:#E7D9C4;
+    --blush:#EADDD2;
+    --rose:#B9707C;
+    --wine:#63273A;
+    --brass:#A9803F;
+    --track:#3A3F52;
+    --line: rgba(34,40,58,0.14);
   }
 
-  *{ box-sizing: border-box; }
+  *{box-sizing:border-box; margin:0; padding:0;}
 
-  html{ scroll-behavior: smooth; }
+  html{scroll-behavior:smooth;}
 
   body{
-    margin:0;
-    background: var(--parchment);
-    color: var(--ink);
-    font-family: 'Lora', serif;
-    font-size: 18px;
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
+    background:var(--blush);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
 
-  h1, h2, .display{
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    color: inherit;
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
   }
 
-  a{ color: inherit; }
+  a{color:inherit;}
 
-  :focus-visible{
-    outline: 2px solid var(--brass);
-    outline-offset: 3px;
+  .wrap{
+    max-width:1040px;
+    margin:0 auto;
+    padding:0 28px;
   }
 
-  /* ---------- Hero ---------- */
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(234,221,210,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:16px; padding-bottom:16px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+  }
+  .brand svg{width:26px; height:26px;}
+  .navlinks{display:flex; gap:28px; font-size:0.92rem;}
+  .navlinks a{text-decoration:none; opacity:0.75; transition:opacity .2s;}
+  .navlinks a:hover{opacity:1;}
 
+  @media(max-width:640px){
+    .navlinks{display:none;}
+  }
+
+  /* ---------- HERO / TICKET ---------- */
   .hero{
-    position: relative;
-    min-height: 100svh;
-    background: radial-gradient(120% 90% at 50% 8%, #16304C 0%, var(--navy) 45%, var(--navy-deep) 100%);
-    color: var(--parchment);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 8vh 1.5rem 6vh;
-    overflow: hidden;
+    position:relative;
+    padding:80px 0 60px;
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(185,112,124,0.18), transparent 55%),
+      radial-gradient(ellipse at 90% 10%, rgba(169,128,63,0.14), transparent 50%),
+      var(--blush);
   }
 
-  .hero__beam{
-    position: absolute;
-    top: -10%;
-    left: 50%;
-    width: 2600px;
-    height: 2600px;
-    margin-left: -1300px;
-    background: conic-gradient(from 200deg,
-      rgba(237,230,214,0) 0deg,
-      rgba(237,230,214,0.16) 8deg,
-      rgba(237,230,214,0) 20deg,
-      rgba(237,230,214,0) 360deg);
-    transform-origin: 50% 50%;
-    animation: sweep 14s ease-in-out infinite;
-  }
-
-  @keyframes sweep{
-    0%   { transform: rotate(-38deg); }
-    50%  { transform: rotate(18deg); }
-    100% { transform: rotate(-38deg); }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .hero__beam{ animation: none; transform: rotate(-10deg); }
-  }
-
-  .hero__mast{
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero__eyebrow{
-    font-size: 0.95rem;
-    color: var(--brass);
-    margin: 0 0 1.4rem;
-    font-style: italic;
+  .kicker{
+    font-family:'Space Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    color:var(--wine);
+    margin-bottom:18px;
   }
 
   .hero h1{
-    font-size: clamp(2.6rem, 7vw, 5rem);
-    line-height: 1.05;
-    margin: 0 0 1.2rem;
+    font-size:clamp(2.4rem, 5.5vw, 4.1rem);
+    max-width:11ch;
+    line-height:1.04;
+    margin-bottom:22px;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--wine);
   }
 
-  .hero p.lede{
-    max-width: 42ch;
-    margin: 0 auto;
-    font-size: 1.15rem;
-    color: var(--parchment-dim);
+  .hero p.lead{
+    max-width:46ch;
+    font-size:1.08rem;
+    color:#3D3324;
+    margin-bottom:40px;
   }
 
-  .hero__coords{
-    margin-top: 3rem;
-    font-size: 0.9rem;
-    color: rgba(237,230,214,0.55);
-    letter-spacing: 0.04em;
+  /* the ticket card */
+  .ticket{
+    position:relative;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:0;
+    max-width:640px;
+    box-shadow:0 30px 60px -30px rgba(34,40,58,0.35);
+    transform:rotate(-1.2deg);
   }
-
-  /* ---------- Route / timeline ---------- */
-
-  .route{
-    position: relative;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 7rem 1.5rem 4rem;
+  .ticket-inner{
+    display:grid;
+    grid-template-columns:1fr auto;
+    padding:26px 30px;
   }
-
-  .route__spine{
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-image: linear-gradient(to bottom, var(--brass) 0 6px, transparent 6px 14px);
-    background-size: 2px 14px;
-    transform: translateX(-1px);
+  .ticket .row{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:22px;
   }
-
-  @media (max-width: 720px){
-    .route__spine{ left: 28px; }
+  .ticket .route{
+    font-family:'Fraunces', serif;
+    font-size:1.5rem;
   }
-
-  .chapter{
-    position: relative;
-    width: calc(50% - 3rem);
-    margin-bottom: 6rem;
+  .ticket .route .arrow{
+    color:var(--rose);
+    padding:0 8px;
+    font-style:italic;
   }
-
-  .chapter:nth-child(odd){ margin-left: 0; text-align: right; }
-  .chapter:nth-child(even){ margin-left: calc(50% + 3rem); text-align: left; }
-
-  .chapter:last-child{ margin-bottom: 0; }
-
-  @media (max-width: 720px){
-    .chapter, .chapter:nth-child(odd), .chapter:nth-child(even){
-      width: calc(100% - 70px);
-      margin-left: 70px;
-      text-align: left;
-    }
+  .ticket .meta-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    font-family:'Space Mono', monospace;
   }
-
-  .chapter__pin{
-    position: absolute;
-    top: 0.4rem;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--brass);
-    box-shadow: 0 0 0 5px var(--parchment), 0 0 0 6px var(--line);
-  }
-
-  .chapter:nth-child(odd) .chapter__pin{ right: -3.53rem; }
-  .chapter:nth-child(even) .chapter__pin{ left: -3.53rem; }
-
-  @media (max-width: 720px){
-    .chapter:nth-child(odd) .chapter__pin,
-    .chapter:nth-child(even) .chapter__pin{
-      left: -42px;
-      right: auto;
-    }
-  }
-
-  .chapter__mark{
-    display: block;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 0.95rem;
-    color: var(--sea);
-    margin-bottom: 0.5rem;
-  }
-
-  .chapter h2{
-    font-size: clamp(1.7rem, 4vw, 2.3rem);
-    margin: 0 0 0.9rem;
-  }
-
-  .chapter p{
-    margin: 0 0 0.9rem;
-    max-width: 46ch;
-  }
-
-  .chapter:nth-child(odd) p{ margin-left: auto; }
-  .chapter:nth-child(even) p{ margin-right: auto; }
-
-  @media (max-width: 720px){
-    .chapter p{ margin-left: 0 !important; margin-right: 0 !important; }
-  }
-
-  .chapter--vow{
-    text-align: center !important;
-    width: 100% !important;
-    margin-left: 0 !important;
-  }
-
-  .chapter--vow .chapter__pin{
-    left: 50%;
-    transform: translateX(-50%);
-    right: auto;
-  }
-
-  @media (max-width: 720px){
-    .chapter--vow{ margin-left: 70px !important; width: calc(100% - 70px) !important; text-align: left !important; }
-    .chapter--vow .chapter__pin{ left: -42px; transform: none; }
-  }
-
-  .chapter--vow p{ margin-left: auto; margin-right: auto; }
-
-  .letter{
-    background: #fff;
-    border: 1px solid rgba(28,26,22,0.12);
-    padding: 1.3rem 1.5rem;
-    margin-top: 1.2rem;
-    font-style: italic;
-    color: #3a362e;
-    box-shadow: 3px 3px 0 rgba(28,26,22,0.06);
-  }
-
-  .chapter:nth-child(odd) .letter{ text-align: right; }
-  .chapter:nth-child(even) .letter{ text-align: left; }
-  @media (max-width: 720px){
-    .letter, .chapter:nth-child(odd) .letter{ text-align: left; }
-  }
-
-  /* ---------- Divider ---------- */
-
-  .tide{
+  .ticket .meta-grid div span.label{
     display:block;
-    width: 100%;
-    height: 90px;
+    font-size:0.62rem;
+    color:#7A6E58;
+    margin-bottom:4px;
+  }
+  .ticket .meta-grid div span.val{
+    font-size:0.85rem;
+  }
+  .ticket .stub{
+    border-left:2px dashed var(--line);
+    display:flex; align-items:center; justify-content:center;
+    padding:0 22px;
+    writing-mode:vertical-rl;
+    font-family:'Space Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    color:var(--brass);
+  }
+  .ticket .holepunch{
+    position:absolute;
+    width:14px; height:14px;
+    background:var(--blush);
+    border-radius:50%;
+    right:78px;
+  }
+  .ticket .holepunch.top{top:-7px;}
+  .ticket .holepunch.bottom{bottom:-7px;}
+
+  @media(max-width:600px){
+    .ticket-inner{grid-template-columns:1fr;}
+    .ticket .stub{
+      writing-mode:horizontal-tb;
+      border-left:none;
+      border-top:2px dashed var(--line);
+      padding:14px 0 0;
+    }
+    .ticket .meta-grid{grid-template-columns:repeat(2,1fr);}
+    .ticket .holepunch{display:none;}
   }
 
-  /* ---------- Epilogue ---------- */
-
-  .epilogue{
-    background: var(--navy-deep);
-    color: var(--parchment-dim);
-    text-align: center;
-    padding: 6rem 1.5rem 5rem;
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:90px 0;}
+  .section-head{
+    display:flex; align-items:baseline; gap:16px;
+    margin-bottom:48px;
+  }
+  .section-head .num{
+    font-family:'Space Mono', monospace;
+    font-size:0.8rem;
+    color:var(--brass);
+  }
+  .section-head h2{
+    font-size:clamp(1.7rem, 3vw, 2.3rem);
   }
 
-  .epilogue h2{
-    color: var(--parchment);
-    font-size: clamp(1.9rem, 4vw, 2.6rem);
-    max-width: 20ch;
-    margin: 0 auto 1.3rem;
+  /* ---------- STORY ---------- */
+  .story{background:var(--paper);}
+  .story-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:60px;
+    align-items:start;
+  }
+  .story-grid p{
+    max-width:52ch;
+    margin-bottom:18px;
+    color:#3D3324;
+  }
+  .story-grid p:first-of-type::first-letter{
+    font-family:'Fraunces', serif;
+    font-size:3.2rem;
+    float:left;
+    line-height:0.8;
+    padding-right:8px;
+    padding-top:6px;
+    color:var(--wine);
+  }
+  .window{
+    position:relative;
+    border-radius:6px;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:linear-gradient(180deg, #E7B08A 0%, #D98E93 30%, #6B4A63 65%, #2B2B44 100%);
+  }
+  .window svg{position:absolute; inset:0; width:100%; height:100%;}
+
+  @media(max-width:800px){
+    .story-grid{grid-template-columns:1fr;}
   }
 
-  .epilogue p{
-    max-width: 48ch;
-    margin: 0 auto 0;
+  /* ---------- TIMELINE ---------- */
+  .timeline{position:relative;}
+  .rail{
+    position:absolute;
+    left:20px; top:0; bottom:0;
+    width:2px;
+    background:repeating-linear-gradient(to bottom, var(--track) 0 8px, transparent 8px 16px);
+  }
+  @media(min-width:760px){
+    .rail{left:50%; transform:translateX(-50%);}
+  }
+  .stop{
+    position:relative;
+    display:grid;
+    grid-template-columns:40px 1fr;
+    gap:20px;
+    margin-bottom:52px;
+  }
+  .stop:last-child{margin-bottom:0;}
+  .stop .dot{
+    width:40px; height:40px;
+    border-radius:50%;
+    background:var(--paper);
+    border:2px solid var(--track);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Mono', monospace;
+    font-size:0.7rem;
+    color:var(--wine);
+    z-index:2;
+  }
+  .stop .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:22px 26px;
+  }
+  .stop .card .when{
+    font-family:'Space Mono', monospace;
+    font-size:0.7rem;
+    color:var(--brass);
+    margin-bottom:8px;
+    display:block;
+  }
+  .stop .card h3{font-size:1.15rem; margin-bottom:8px;}
+  .stop .card p{color:#3D3324; font-size:0.96rem;}
+
+  @media(min-width:760px){
+    .stop{grid-template-columns:1fr 40px 1fr;}
+    .stop .dot{grid-column:2; justify-self:center;}
+    .stop .card{grid-column:1;}
+    .stop:nth-child(even) .card{grid-column:3;}
+    .stop:nth-child(odd) .card{text-align:right;}
+    .stop:nth-child(odd) .card .when{text-align:right;}
   }
 
-  .epilogue__mark{
-    color: var(--brass);
-    font-style: italic;
-    margin-top: 2.2rem;
-    font-size: 0.95rem;
+  /* ---------- DIARY ---------- */
+  .diary{background:var(--paper);}
+  .entry{
+    border-top:1px solid var(--line);
+    padding:34px 0;
+    display:grid;
+    grid-template-columns:160px 1fr;
+    gap:32px;
+  }
+  .entry:last-child{border-bottom:1px solid var(--line);}
+  .entry .date{
+    font-family:'Space Mono', monospace;
+    font-size:0.75rem;
+    color:var(--wine);
+    padding-top:4px;
+  }
+  .entry h3{font-size:1.25rem; margin-bottom:10px;}
+  .entry .by{
+    font-family:'Space Mono', monospace;
+    font-size:0.68rem;
+    color:var(--brass);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-bottom:12px;
+    display:inline-block;
+  }
+  .entry p{max-width:56ch; color:#3D3324;}
+
+  @media(max-width:640px){
+    .entry{grid-template-columns:1fr; gap:10px;}
   }
 
+  /* ---------- GALLERY ---------- */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+  }
+  .frame{
+    aspect-ratio:1/1;
+    border-radius:4px;
+    overflow:hidden;
+    position:relative;
+    border:1px solid var(--line);
+  }
+  .frame svg{width:100%; height:100%;}
+  .frame .cap{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:10px 12px;
+    font-family:'Space Mono', monospace;
+    font-size:0.66rem;
+    color:#fff;
+    background:linear-gradient(to top, rgba(20,16,26,0.7), transparent);
+  }
+  @media(max-width:700px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* ---------- FOOTER ---------- */
   footer{
-    text-align: center;
-    padding: 2rem 1.5rem 2.5rem;
-    font-size: 0.85rem;
-    color: rgba(28,26,22,0.45);
-    background: var(--parchment);
+    background:var(--ink);
+    color:var(--paper);
+    padding:70px 0 40px;
   }
+  footer h2{
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    max-width:16ch;
+    margin-bottom:18px;
+  }
+  footer p{
+    color:#C7C4D2;
+    max-width:44ch;
+    margin-bottom:32px;
+  }
+  .foot-bottom{
+    display:flex; justify-content:space-between; align-items:center;
+    border-top:1px solid rgba(241,231,216,0.15);
+    padding-top:24px;
+    margin-top:40px;
+    font-family:'Space Mono', monospace;
+    font-size:0.68rem;
+    color:#8B879A;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .fade-up{
+      opacity:0;
+      transform:translateY(14px);
+      animation:fadeUp .7s ease forwards;
+    }
+  }
+  @keyframes fadeUp{to{opacity:1; transform:translateY(0);}}
 </style>
 </head>
 <body>
 
+<nav>
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 15h16M4 15a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M4 15V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8M8 11h8M9 17l-1.5 3M15 17l1.5 3" stroke="#63273A" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Kilian &amp; Alice
+    </div>
+    <div class="navlinks">
+      <a href="#geschichte">Geschichte</a>
+      <a href="#reise">Die Reise</a>
+      <a href="#tagebuch">Tagebuch</a>
+      <a href="#galerie">Galerie</a>
+    </div>
+  </div>
+</nav>
+
 <header class="hero">
-  <div class="hero__beam" aria-hidden="true"></div>
-  <div class="hero__mast">
-    <p class="hero__eyebrow">Eine Geschichte von zwei Ufern</p>
-    <h1>Das Feuer<br>von Point Isolde</h1>
-    <p class="lede">Wie ein Leuchtturmwärter und eine Kartografin sich über einem stürmischen Kanal fanden — und die Gezeiten lernten, auf sie zu warten.</p>
-    <p class="hero__coords">48°53′ N &nbsp;·&nbsp; 5°06′ W &nbsp;·&nbsp; seit jenem Novemberabend</p>
+  <div class="wrap">
+    <div class="kicker">GLEIS 7 — 08:42 UHR</div>
+    <h1>Zwei Sitzplätze,<br>eine <em>Verspätung</em>.</h1>
+    <p class="lead">Alles begann mit einem 34 Minuten verspäteten Regionalzug, einem vergessenen Ladekabel und einem Sitzplatz, der eigentlich schon besetzt war. Das ist unsere Geschichte — festgehalten, Station für Station.</p>
+
+    <div class="ticket">
+      <div class="holepunch top"></div>
+      <div class="holepunch bottom"></div>
+      <div class="ticket-inner">
+        <div>
+          <div class="row">
+            <div class="route">Augsburg <span class="arrow">→</span> München</div>
+          </div>
+          <div class="meta-grid">
+            <div><span class="label">FAHRGAST 1</span><span class="val">K. M.</span></div>
+            <div><span class="label">FAHRGAST 2</span><span class="val">A. W.</span></div>
+            <div><span class="label">SITZPLÄTZE</span><span class="val">14C / 14D</span></div>
+            <div><span class="label">DATUM</span><span class="val">03. MÄRZ</span></div>
+            <div><span class="label">KLASSE</span><span class="val">1. BLICK</span></div>
+            <div><span class="label">STATUS</span><span class="val">GÜLTIG, UNBEFRISTET</span></div>
+          </div>
+        </div>
+        <div class="stub">ABTEIL 14 · HIN &amp; ZURÜCK</div>
+      </div>
+    </div>
   </div>
 </header>
 
-<main class="route">
-  <div class="route__spine" aria-hidden="true"></div>
+<section class="story" id="geschichte">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">01</span>
+      <h2>Wie alles begann</h2>
+    </div>
+    <div class="story-grid">
+      <div>
+        <p>Kilian hatte den falschen Zug fast verpasst, Alice den richtigen fast auch. Als die Ansage die Verspätung verkündete, seufzten beide gleichzeitig — und mussten lachen, weil sie sich gegenübersaßen und keiner von beiden wusste, wohin mit dem Blick.</p>
+        <p>Es war Alice, die als Erste etwas sagte: Ob er ihr Ladekabel für zwei Minuten leihen könne. Aus zwei Minuten wurden vierunddreißig — genau die Länge der Verspätung. Sie sprachen über Bücher, die sie nie zu Ende lasen, über Städte, in denen sie nie geblieben waren, und darüber, warum Zugrestaurants nie genug Kaffee haben.</p>
+        <p>Beim Aussteigen tauschten sie keine Nummern, sondern Notizzettel mit halb fertigen Gedanken. Kilian fand seinen erst am Abend wieder — in der falschen Jackentasche, dort, wo er ihn absichtlich nicht hingesteckt hatte.</p>
+      </div>
+      <div class="window">
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <circle cx="330" cy="70" r="34" fill="#F4D9A6" opacity="0.9"/>
+          <path d="M0 340 L60 300 L120 330 L180 290 L240 320 L300 280 L360 310 L400 290 L400 500 L0 500 Z" fill="#1E1B2E" opacity="0.55"/>
+          <path d="M0 380 L70 350 L140 370 L210 340 L280 365 L340 335 L400 355 L400 500 L0 500 Z" fill="#15121F" opacity="0.7"/>
+          <rect x="150" y="0" width="6" height="500" fill="#22283A" opacity="0.25"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <section class="chapter">
-    <span class="chapter__pin" aria-hidden="true"></span>
-    <span class="chapter__mark">I</span>
-    <h2>Das Licht im Nebel</h2>
-    <p>Kilian hütete das Feuer von Point Isolde seit sieben Jahren, meist allein mit dem Wind und dem Klicken der Drehmechanik über sich. In jener Novembernacht trieb ein Vermessungsschiff der Handelsgilde zu nah an die Klippen, seine Kompasse verwirrt vom Sturm. Alice stand am Bug, die Karten unter der Jacke vor der Gischt schützend, als sein Lichtstrahl zum ersten Mal über ihr Deck strich.</p>
-    <div class="letter">„Ich sah drei Blitze, dann Dunkelheit, dann wieder drei. Wie ein Herzschlag, der uns nach Hause zeigte.“</div>
-  </section>
+<section class="timeline" id="reise">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">02</span>
+      <h2>Die Reise bis hierher</h2>
+    </div>
 
-  <section class="chapter">
-    <span class="chapter__pin" aria-hidden="true"></span>
-    <span class="chapter__mark">II</span>
-    <h2>Karten und Briefe</h2>
-    <p>Der Schaden am Schiff hielt sie neun Tage auf der Insel fest. Alice zeichnete die zerklüftete Küste neu, Kilian zeigte ihr, welche Riffe bei Ebbe zum Vorschein kamen und welche log logen. Abends saßen sie am Fuß des Turms, tranken schwarzen Tee aus Blechtassen und sprachen, bis die Kerze herunterbrannte. Als ihr Schiff endlich ablegte, blieb ein Versprechen zurück: zu schreiben, jede Woche, gleich wie weit die See dazwischen läge.</p>
-    <div class="letter">„Beigelegt: eine Nachzeichnung der Nordklippe. Du wirst sehen, ich habe deinen Turm etwas höher gemalt, als er ist.“</div>
-  </section>
+    <div class="rail"></div>
 
-  <section class="chapter">
-    <span class="chapter__pin" aria-hidden="true"></span>
-    <span class="chapter__mark">III</span>
-    <h2>Der lange Winter</h2>
-    <p>Von Januar bis März legte kein Boot mehr an — die See war zu wild, die Gilde hatte Alice ohnehin ins Festland zurückbeordert, um neue Karten für den Süden zu zeichnen. Die Briefe kamen unregelmäßig, manchmal drei auf einmal, manchmal keine drei Wochen lang. Kilian begann zu zweifeln, ob eine Kartografin mit halb Europa vor sich wirklich an einen Felsen zurückkehren würde. Er schrieb trotzdem weiter, jeden Sonntag, auch wenn die Antwort ausblieb.</p>
-    <div class="letter">„Wenn du dies liest, ist es Sonntag gewesen. Das Feuer brannte. Ich auch, ein wenig weniger sicher als sonst.“</div>
-  </section>
+    <div class="stop">
+      <div class="dot">01</div>
+      <div class="card">
+        <span class="when">03. März — Regionalbahn 34</span>
+        <h3>Die Begegnung</h3>
+        <p>Ein geliehenes Ladekabel, ein falscher Sitzplatz, ein gemeinsames Lachen über die Zugverspätung.</p>
+      </div>
+    </div>
 
-  <section class="chapter">
-    <span class="chapter__pin" aria-hidden="true"></span>
-    <span class="chapter__mark">IV</span>
-    <h2>Die Flut kehrt zurück</h2>
-    <p>Im April erschien ein kleines Boot am Horizont, viel zu klein für die Gilde. Alice hatte es sich selbst geliehen, ohne Auftrag, ohne Karte, nur mit der Erinnerung an drei Lichtblitze. Sie ruderte die letzten hundert Meter selbst, gegen den Rat jedes erfahrenen Seemanns im Hafen. Kilian sah sie vom Turm aus lange bevor sie anlegte — und war schon halb den Klippenweg hinuntergelaufen, ehe er wusste, dass er sich bewegt hatte.</p>
-    <div class="letter">„Ich habe keine Ladung und keinen Auftrag. Nur die Frage, ob der Tee noch in derselben Dose ist.“</div>
-  </section>
+    <div class="stop">
+      <div class="dot">02</div>
+      <div class="card">
+        <span class="when">11. März</span>
+        <h3>Die erste Nachricht</h3>
+        <p>Alice schrieb: „Hab deinen Zettel gefunden. Der Satz war nicht zu Ende." Kilian antwortete drei Stunden später, weil er zwanzig Entwürfe geschrieben hatte.</p>
+      </div>
+    </div>
 
-  <section class="chapter chapter--vow">
-    <span class="chapter__pin" aria-hidden="true"></span>
-    <span class="chapter__mark">V</span>
-    <h2>Das Versprechen bei Ebbe</h2>
-    <p>Sie heirateten dort, wo die Sandbank zweimal täglich aus dem Meer auftaucht und wieder verschwindet — nur eine Stunde lang begehbar, bevor die Flut sie zurückfordert. Ein Dutzend Fischer und der Pfarrer von der Nachbarinsel standen barfuß im nassen Sand, während Kilian und Alice sich versprachen, was das Meer ihnen gelehrt hatte: dass manches wiederkommt, wenn man es nur lange genug erwartet.</p>
-  </section>
-</main>
+    <div class="stop">
+      <div class="dot">03</div>
+      <div class="card">
+        <span class="when">29. März</span>
+        <h3>Das erste Date</h3>
+        <p>Ein Café am Hauptbahnhof, weil beide es albern fanden, sich woanders zu treffen. Aus einem Kaffee wurden drei, aus einer Stunde wurden vier.</p>
+      </div>
+    </div>
 
-<svg class="tide" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
-  <path d="M0,45 C240,90 480,0 720,45 C960,90 1200,0 1440,45 L1440,90 L0,90 Z" fill="#0F1E33"></path>
-</svg>
+    <div class="stop">
+      <div class="dot">04</div>
+      <div class="card">
+        <span class="when">17. Mai</span>
+        <h3>Die Fernbeziehung, kurz</h3>
+        <p>Zwei Wochen, zwei Städte, ein Ticket-Abo. Sie lernten, dass Vermissen leichter wird, wenn man weiß, wann der nächste Zug fährt.</p>
+      </div>
+    </div>
 
-<section class="epilogue">
-  <h2>Heute stehen zwei Lichter am Kap</h2>
-  <p>Das eine dreht sich noch immer jede Nacht über der Bucht. Das andere hängt gerahmt in der Turmstube: Alice' letzte Karte von Point Isolde, in deren Ecke ein winziger Leuchtturm ein wenig zu hoch gezeichnet ist — mit Absicht, wie sie sagt, so wie sie ihn zum ersten Mal gesehen hat.</p>
-  <p class="epilogue__mark">— Ende —</p>
+    <div class="stop">
+      <div class="dot">05</div>
+      <div class="card">
+        <span class="when">Heute</span>
+        <h3>Abteil für zwei</h3>
+        <p>Kein Ladekabel mehr nötig — sie teilen sich seither so ziemlich alles. Die Geschichte wird laufend fortgeschrieben.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="diary" id="tagebuch">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">03</span>
+      <h2>Aus dem Tagebuch</h2>
+    </div>
+
+    <div class="entry">
+      <div class="date">04. März</div>
+      <div>
+        <span class="by">Notiz von Alice</span>
+        <h3>Der Zettel, den ich nicht zurückbekam</h3>
+        <p>Ich habe extra langsam geschrieben, damit er lesen kann, wie unleserlich meine Handschrift eigentlich ist. Jetzt frage ich mich, ob er den Zettel überhaupt gefunden hat — oder ob er einfach mit dem Kaffeebecher im Müll gelandet ist.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="date">12. März</div>
+      <div>
+        <span class="by">Notiz von Kilian</span>
+        <h3>Zwanzig Entwürfe für eine Antwort</h3>
+        <p>Ich habe „Hey" geschrieben und wieder gelöscht. Dann „Schön, von dir zu hören" — zu förmlich für jemanden, der mein Ladekabel für ein Gespräch über Bahnhofskaffee gehalten hat. Am Ende schrieb ich einfach die Wahrheit.</p>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="date">30. März</div>
+      <div>
+        <span class="by">Notiz von Alice</span>
+        <h3>Vier Stunden, ein Tisch</h3>
+        <p>Die Bedienung hat uns dreimal gefragt, ob wir noch etwas möchten. Wir wollten nur, dass die Zeit langsamer vergeht. Das habe ich ihr natürlich nicht gesagt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="galerie">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">04</span>
+      <h2>Kleine Erinnerungen</h2>
+    </div>
+    <div class="gallery-grid">
+
+      <div class="frame">
+        <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="300" fill="#EADDD2"/>
+          <ellipse cx="150" cy="190" rx="70" ry="60" fill="#B9707C"/>
+          <ellipse cx="150" cy="150" rx="55" ry="45" fill="#F1E7D8"/>
+          <path d="M110 140 Q150 100 190 140" stroke="#63273A" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="cap">Der Kaffee, der kalt wurde</div>
+      </div>
+
+      <div class="frame">
+        <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="300" fill="#3A3F52"/>
+          <circle cx="150" cy="120" r="46" fill="#F4D9A6"/>
+          <rect x="0" y="200" width="300" height="100" fill="#22283A"/>
+          <rect x="30" y="210" width="60" height="70" fill="#63273A" opacity="0.6"/>
+          <rect x="120" y="230" width="60" height="50" fill="#63273A" opacity="0.6"/>
+          <rect x="210" y="200" width="60" height="80" fill="#63273A" opacity="0.6"/>
+        </svg>
+        <div class="cap">Blick aus Abteil 14</div>
+      </div>
+
+      <div class="frame">
+        <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="300" fill="#F1E7D8"/>
+          <path d="M40 220 h220" stroke="#22283A" stroke-width="3"/>
+          <rect x="60" y="150" width="20" height="70" fill="#A9803F"/>
+          <rect x="130" y="120" width="20" height="100" fill="#A9803F"/>
+          <rect x="200" y="170" width="20" height="50" fill="#A9803F"/>
+          <circle cx="70" cy="140" r="10" fill="#B9707C"/>
+          <circle cx="140" cy="110" r="10" fill="#B9707C"/>
+          <circle cx="210" cy="160" r="10" fill="#B9707C"/>
+        </svg>
+        <div class="cap">Drei Fahrscheine, ein Abo</div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
 <footer>
-  Eine ausgedachte Geschichte. Point Isolde existiert nur zwischen diesen Zeilen.
+  <div class="wrap">
+    <h2>Nächster Halt: noch nicht festgelegt.</h2>
+    <p>Manche Geschichten beginnen mit einem Plan. Unsere begann mit einer Verspätung — und wir haben nicht vor, sie zu beenden.</p>
+    <div class="foot-bottom">
+      <span>KILIAN M. &amp; ALICE W. — SEIT DEM 03. MÄRZ</span>
+      <span>ABTEIL 14 · GEFÜHRT MIT LIEBE ZUM DETAIL</span>
+    </div>
+  </div>
 </footer>
 
 </body>
