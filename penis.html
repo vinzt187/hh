@@ -770,7 +770,7 @@
       <h2>Finde deine Verbindung</h2>
     </div>
 
-    <div class="notice">Demo-Hinweis: Das ist ein Prototyp ohne echtes Server-Backend. Accounts, Profile und hochgeladene Fotos werden im Speicher dieses Artefakts abgelegt und sind für alle Besucher:innen dieser Seite sichtbar. Bitte keine echten Passwörter oder privaten Fotos verwenden.<br><br>Zum sofortigen Ausprobieren sind fünf Test-Accounts vorangelegt, z.&nbsp;B. <strong>kilian_m</strong> / <strong>zugverspaetung</strong> oder <strong>alice_w</strong> / <strong>ladekabel</strong> (weitere: jonas_k/abteil14, mira_t/gleis7, sam_r/fahrschein).</div>
+    <div class="notice" id="storageNotice">Demo-Hinweis: Das ist ein Prototyp ohne echtes Server-Backend. Accounts, Profile und hochgeladene Fotos werden im Speicher dieses Artefakts abgelegt und sind für alle Besucher:innen dieser Seite sichtbar. Bitte keine echten Passwörter oder privaten Fotos verwenden.<br><br>Zum sofortigen Ausprobieren sind fünf Test-Accounts vorangelegt, z.&nbsp;B. <strong>kilian_m</strong> / <strong>zugverspaetung</strong> oder <strong>alice_w</strong> / <strong>ladekabel</strong> (weitere: jonas_k/abteil14, mira_t/gleis7, sam_r/fahrschein).</div>
 
     <div id="authScreen">
       <div class="tabs" id="authTabs">
@@ -884,7 +884,49 @@
 
 <script>
 (function(){
-  const DB = window.storage;
+  // Bevorzugt den Artefakt-Speicher (window.storage). Ist die Seite als eigenständige
+  // HTML-Datei geöffnet (z.B. per Doppelklick), existiert dieser nicht — dann wird
+  // automatisch auf localStorage im Browser umgeschaltet, damit Accounts trotzdem
+  // gespeichert werden (lokal auf diesem Gerät, nicht geräteübergreifend geteilt).
+  function scopeKey(key, shared){ return (shared ? 'shared::' : 'personal::') + key; }
+  function indexKey(shared){ return '__index__' + (shared ? 'shared' : 'personal'); }
+  function readIndex(shared){
+    try{ return JSON.parse(localStorage.getItem(indexKey(shared)) || '[]'); }
+    catch(e){ return []; }
+  }
+  function writeIndex(shared, idx){
+    localStorage.setItem(indexKey(shared), JSON.stringify(idx));
+  }
+  async function lsGet(key, shared){
+    const raw = localStorage.getItem(scopeKey(key, shared));
+    if(raw === null) throw new Error('not found');
+    return {key, value: raw, shared: !!shared};
+  }
+  async function lsSet(key, value, shared){
+    localStorage.setItem(scopeKey(key, shared), value);
+    const idx = readIndex(shared);
+    if(!idx.includes(key)){ idx.push(key); writeIndex(shared, idx); }
+    return {key, value, shared: !!shared};
+  }
+  async function lsDelete(key, shared){
+    localStorage.removeItem(scopeKey(key, shared));
+    const idx = readIndex(shared).filter(k=>k!==key);
+    writeIndex(shared, idx);
+    return {key, deleted:true, shared: !!shared};
+  }
+  async function lsList(prefix, shared){
+    const idx = readIndex(shared);
+    const keys = prefix ? idx.filter(k=>k.startsWith(prefix)) : idx;
+    return {keys, prefix, shared: !!shared};
+  }
+
+  const hasArtifactStorage = !!(window.storage && typeof window.storage.get === 'function');
+  window.__DB = hasArtifactStorage ? window.storage : {get:lsGet, set:lsSet, delete:lsDelete, list:lsList};
+  window.__usingLocalFallback = !hasArtifactStorage;
+})();
+
+(function(){
+  const DB = window.__DB;
   const palette = ['#B9707C','#A9803F','#63273A','#3A3F52','#8A6E9E'];
 
   window.__avatarFallback = function(imgEl){
@@ -1267,6 +1309,10 @@
 
   // ---- init: Demo-Accounts anlegen, dann Session wiederherstellen ----
   (async function init(){
+    if(window.__usingLocalFallback){
+      const n = document.getElementById('storageNotice');
+      n.innerHTML += '<br><br><strong>Hinweis:</strong> Diese Seite läuft gerade außerhalb des Claude-Artefakt-Speichers, daher werden Accounts stattdessen lokal im Speicher dieses Browsers abgelegt (nur auf diesem Gerät, nicht geräteübergreifend geteilt).';
+    }
     await seedDemoAccounts();
     const savedUser = await getJSON('session_user', false);
     if(savedUser){
