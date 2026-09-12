@@ -374,6 +374,163 @@
     gap:12px;
   }
 
+  /* ---------- DATING FEATURE ---------- */
+  .notice{
+    background:rgba(169,128,63,0.12);
+    border:1px solid rgba(169,128,63,0.35);
+    color:#5C4522;
+    font-size:0.82rem;
+    padding:14px 18px;
+    border-radius:4px;
+    margin-bottom:36px;
+    max-width:64ch;
+  }
+  .auth-card, .profile-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:36px;
+    max-width:440px;
+  }
+  .tabs{display:flex; gap:8px; margin-bottom:28px;}
+  .tabs button, .filter-row button{
+    font-family:'Space Mono', monospace;
+    font-size:0.78rem;
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:transparent;
+    cursor:pointer;
+    color:var(--ink);
+    transition:all .2s;
+  }
+  .tabs button.active, .filter-row button.active{background:var(--wine); color:var(--paper); border-color:var(--wine);}
+
+  .form-field{margin-bottom:16px;}
+  .form-field label{display:block; font-size:0.78rem; margin-bottom:6px; color:#5C4522; font-family:'Space Mono',monospace;}
+  .form-field input, .form-field select, .form-field textarea{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:#fff;
+    font-family:'Work Sans', sans-serif;
+    font-size:0.92rem;
+    color:var(--ink);
+  }
+  .form-field textarea{resize:vertical; min-height:80px;}
+  .photo-preview{
+    width:96px; height:96px;
+    border-radius:6px;
+    object-fit:cover;
+    border:1px solid var(--line);
+    display:block;
+  }
+
+  .btn{
+    font-family:'Space Mono', monospace;
+    font-size:0.8rem;
+    padding:11px 22px;
+    border-radius:4px;
+    border:1px solid var(--wine);
+    background:var(--wine);
+    color:var(--paper);
+    cursor:pointer;
+    transition:opacity .2s;
+  }
+  .btn:hover{opacity:0.88;}
+  .btn.ghost{background:transparent; color:var(--wine);}
+  .error-msg{color:#8A2E2E; font-size:0.82rem; margin-top:10px; min-height:1em;}
+
+  .filter-row{display:flex; gap:10px; margin-bottom:32px; flex-wrap:wrap;}
+
+  .deck{position:relative; max-width:380px; margin:0 auto 32px;}
+  .swipe-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 24px 50px -24px rgba(34,40,58,0.35);
+  }
+  .swipe-photo{
+    width:100%; aspect-ratio:3/4;
+    background:var(--track);
+    position:relative;
+    overflow:hidden;
+  }
+  .swipe-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .avatar-fallback{
+    width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif;
+    font-size:4rem;
+    color:#fff;
+  }
+  .swipe-info{padding:22px 24px;}
+  .swipe-info h3{font-size:1.3rem; margin-bottom:4px;}
+  .swipe-info .cat{
+    font-family:'Space Mono', monospace;
+    font-size:0.68rem;
+    color:var(--brass);
+    margin-bottom:10px;
+    display:inline-block;
+  }
+  .swipe-info p{color:#3D3324; font-size:0.9rem;}
+
+  .swipe-actions{display:flex; justify-content:center; gap:24px; margin-top:24px;}
+  .swipe-actions button{
+    width:58px; height:58px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--paper);
+    font-size:1.4rem;
+    cursor:pointer;
+    transition:transform .15s;
+  }
+  .swipe-actions button:hover{transform:scale(1.06);}
+  .swipe-actions .pass{color:#8A2E2E;}
+  .swipe-actions .like{color:var(--wine); border-color:var(--wine);}
+
+  .empty-state{
+    text-align:center;
+    padding:60px 20px;
+    color:#6B5F49;
+    font-family:'Space Mono', monospace;
+    font-size:0.85rem;
+  }
+
+  .matches-toggle{margin-bottom:20px;}
+  .matches-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:16px;}
+  .match-chip{text-align:center;}
+  .match-chip .avatar-fallback, .match-chip img{
+    width:76px; height:76px; border-radius:50%; margin:0 auto 8px;
+  }
+  .match-chip img{object-fit:cover;}
+  .match-chip span{font-size:0.78rem; display:block;}
+
+  .session-bar{display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; flex-wrap:wrap; gap:12px;}
+  .session-bar .who{font-family:'Space Mono', monospace; font-size:0.78rem; color:var(--brass);}
+
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(20,16,26,0.7);
+    display:flex; align-items:center; justify-content:center;
+    z-index:100; padding:20px;
+  }
+  .modal-overlay[hidden]{display:none;}
+  .match-modal{
+    background:var(--paper);
+    border-radius:10px;
+    padding:44px 36px;
+    text-align:center;
+    max-width:380px;
+  }
+  .match-modal h2{font-size:1.8rem; margin-bottom:6px; color:var(--wine);}
+  .match-modal .subtitle{font-family:'Space Mono', monospace; font-size:0.75rem; color:var(--brass); margin-bottom:24px;}
+  .match-avatars{display:flex; justify-content:center; margin-bottom:24px;}
+  .match-avatars .av{width:84px; height:84px; border-radius:50%; border:3px solid var(--paper); margin-left:-16px; overflow:hidden;}
+  .match-avatars .av:first-child{margin-left:0;}
+  .match-avatars .av .avatar-fallback{font-size:2rem;}
+
   @media (prefers-reduced-motion: no-preference){
     .fade-up{
       opacity:0;
@@ -397,6 +554,7 @@
       <a href="#reise">Die Reise</a>
       <a href="#tagebuch">Tagebuch</a>
       <a href="#galerie">Galerie</a>
+      <a href="#dating">Dating</a>
     </div>
   </div>
 </nav>
@@ -604,6 +762,528 @@
     </div>
   </div>
 </footer>
+
+<section class="story" id="dating" style="background:var(--blush);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="num">05</span>
+      <h2>Finde deine Verbindung</h2>
+    </div>
+
+    <div class="notice">Demo-Hinweis: Das ist ein Prototyp ohne echtes Server-Backend. Accounts, Profile und hochgeladene Fotos werden im Speicher dieses Artefakts abgelegt und sind für alle Besucher:innen dieser Seite sichtbar. Bitte keine echten Passwörter oder privaten Fotos verwenden.<br><br>Zum sofortigen Ausprobieren sind fünf Test-Accounts vorangelegt, z.&nbsp;B. <strong>kilian_m</strong> / <strong>zugverspaetung</strong> oder <strong>alice_w</strong> / <strong>ladekabel</strong> (weitere: jonas_k/abteil14, mira_t/gleis7, sam_r/fahrschein).</div>
+
+    <div id="authScreen">
+      <div class="tabs" id="authTabs">
+        <button type="button" class="active" data-tab="login">Anmelden</button>
+        <button type="button" data-tab="register">Registrieren</button>
+      </div>
+
+      <form id="loginForm" class="auth-card">
+        <div class="form-field">
+          <label>Benutzername</label>
+          <input type="text" id="loginUsername" required autocomplete="username">
+        </div>
+        <div class="form-field">
+          <label>Passwort</label>
+          <input type="password" id="loginPassword" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn">Einsteigen</button>
+        <div class="error-msg" id="loginError"></div>
+      </form>
+
+      <form id="registerForm" class="auth-card" hidden>
+        <div class="form-field">
+          <label>Benutzername</label>
+          <input type="text" id="regUsername" required minlength="3">
+        </div>
+        <div class="form-field">
+          <label>Passwort</label>
+          <input type="password" id="regPassword" required minlength="4">
+        </div>
+        <button type="submit" class="btn">Weiter zum Profil</button>
+        <div class="error-msg" id="regError"></div>
+      </form>
+    </div>
+
+    <form id="profileForm" class="profile-card" hidden>
+      <div class="form-field">
+        <label>Name</label>
+        <input type="text" id="pName" required>
+      </div>
+      <div class="form-field">
+        <label>Alter</label>
+        <input type="number" id="pAge" min="18" max="120" required>
+      </div>
+      <div class="form-field">
+        <label>Ich bin</label>
+        <select id="pGender" required>
+          <option value="Mann">Mann</option>
+          <option value="Frau">Frau</option>
+          <option value="Divers">Divers</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Ich interessiere mich für</label>
+        <select id="pInterest" required>
+          <option value="Frauen">Frauen</option>
+          <option value="Männer">Männer</option>
+          <option value="Alle">Alle</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Kurzbio</label>
+        <textarea id="pBio" maxlength="200" placeholder="Ein Satz über dich..."></textarea>
+      </div>
+      <div class="form-field">
+        <label>Foto hochladen</label>
+        <input type="file" id="pPhotoFile" accept="image/*">
+        <div id="photoPreviewWrap" style="margin-top:10px;"></div>
+      </div>
+      <div class="form-field">
+        <label>oder Foto-URL (optional, falls kein Upload)</label>
+        <input type="url" id="pPhoto" placeholder="https://...">
+      </div>
+      <button type="submit" class="btn">Profil speichern</button>
+      <div class="error-msg" id="profileError"></div>
+    </form>
+
+    <div id="appScreen" hidden>
+      <div class="session-bar">
+        <span class="who">Angemeldet als <strong id="whoUser"></strong></span>
+        <button type="button" class="btn ghost" id="logoutBtn">Abmelden</button>
+      </div>
+
+      <div class="filter-row" id="filterRow">
+        <button type="button" class="active" data-filter="Alle">Alle</button>
+        <button type="button" data-filter="Hetero">Hetero</button>
+        <button type="button" data-filter="Schwul">Schwul</button>
+        <button type="button" data-filter="Lesbisch">Lesbisch</button>
+        <button type="button" data-filter="Bi">Bi</button>
+      </div>
+
+      <div class="deck" id="deck">
+        <div class="empty-state">Suche nach Mitreisenden...</div>
+      </div>
+
+      <div class="matches-toggle">
+        <h3 style="font-family:'Fraunces',serif; font-size:1.2rem;">Meine Matches</h3>
+      </div>
+      <div class="matches-list" id="matchesList"></div>
+    </div>
+  </div>
+</section>
+
+<div class="modal-overlay" id="matchModal" hidden>
+  <div class="match-modal">
+    <div class="match-avatars" id="matchAvatars"></div>
+    <h2>Anschluss gefunden!</h2>
+    <div class="subtitle" id="matchSubtitle"></div>
+    <button type="button" class="btn" id="matchCloseBtn">Weiterfahren</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const DB = window.storage;
+  const palette = ['#B9707C','#A9803F','#63273A','#3A3F52','#8A6E9E'];
+
+  window.__avatarFallback = function(imgEl){
+    const color = imgEl.dataset.color;
+    const initials = imgEl.dataset.initials;
+    const div = document.createElement('div');
+    div.className = 'avatar-fallback';
+    div.style.background = color;
+    div.textContent = initials;
+    imgEl.replaceWith(div);
+  };
+
+  function hashColor(str){
+    let h = 0;
+    for(let i=0;i<str.length;i++){ h = str.charCodeAt(i) + ((h<<5)-h); }
+    return palette[Math.abs(h) % palette.length];
+  }
+
+  function escapeHTML(str){
+    const d = document.createElement('div');
+    d.textContent = str == null ? '' : String(str);
+    return d.innerHTML;
+  }
+  function escapeAttr(str){
+    return String(str).replace(/"/g, '&quot;');
+  }
+
+  async function getJSON(key, shared){
+    try{
+      const r = await DB.get(key, shared);
+      return r ? JSON.parse(r.value) : null;
+    }catch(e){ return null; }
+  }
+  async function setJSON(key, value, shared){
+    try{
+      return await DB.set(key, JSON.stringify(value), shared);
+    }catch(e){ console.error('Storage-Fehler', e); return null; }
+  }
+  async function delKey(key, shared){
+    try{ return await DB.delete(key, shared); }catch(e){ return null; }
+  }
+
+  async function listAccounts(){
+    try{
+      const res = await DB.list('account:', true);
+      if(!res || !res.keys) return [];
+      const out = [];
+      for(const k of res.keys){
+        const data = await getJSON(k, true);
+        if(data){ out.push(Object.assign({username:k.slice('account:'.length)}, data)); }
+      }
+      return out;
+    }catch(e){ console.error(e); return []; }
+  }
+
+  function orientationCategory(p){
+    if(!p) return 'Divers';
+    if(p.interestedIn === 'Alle') return 'Bi';
+    if(p.gender === 'Mann' && p.interestedIn === 'Frauen') return 'Hetero';
+    if(p.gender === 'Frau' && p.interestedIn === 'Männer') return 'Hetero';
+    if(p.gender === 'Mann' && p.interestedIn === 'Männer') return 'Schwul';
+    if(p.gender === 'Frau' && p.interestedIn === 'Frauen') return 'Lesbisch';
+    return 'Divers';
+  }
+
+  function genderPluralOf(gender){
+    if(gender === 'Mann') return 'Männer';
+    if(gender === 'Frau') return 'Frauen';
+    return null;
+  }
+
+  function mutualRelevant(viewerProfile, candidateProfile){
+    const viewerWantsCandidate = viewerProfile.interestedIn === 'Alle' || viewerProfile.interestedIn === genderPluralOf(candidateProfile.gender);
+    const candidateWantsViewer = candidateProfile.interestedIn === 'Alle' || candidateProfile.interestedIn === genderPluralOf(viewerProfile.gender);
+    return viewerWantsCandidate && candidateWantsViewer;
+  }
+
+  function avatarHTML(profile){
+    const initials = (profile.name || '?').trim().slice(0,1).toUpperCase() || '?';
+    const color = hashColor(profile.name || 'x');
+    if(profile.photoUrl){
+      return '<img src="'+escapeAttr(profile.photoUrl)+'" data-color="'+color+'" data-initials="'+escapeAttr(initials)+'" onerror="window.__avatarFallback(this)">';
+    }
+    return '<div class="avatar-fallback" style="background:'+color+'">'+escapeHTML(initials)+'</div>';
+  }
+
+  function compressImage(file){
+    return new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onerror = ()=>reject(new Error('Datei konnte nicht gelesen werden'));
+      reader.onload = ()=>{
+        const img = new Image();
+        img.onerror = ()=>reject(new Error('Bild konnte nicht geladen werden'));
+        img.onload = ()=>{
+          const maxDim = 480;
+          let w = img.width, h = img.height;
+          if(w > h && w > maxDim){ h = Math.round(h * (maxDim / w)); w = maxDim; }
+          else if(h > maxDim){ w = Math.round(w * (maxDim / h)); h = maxDim; }
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL('image/jpeg', 0.72));
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  let uploadedPhotoData = '';
+  const photoFileInput = document.getElementById('pPhotoFile');
+  const photoPreviewWrap = document.getElementById('photoPreviewWrap');
+  photoFileInput.addEventListener('change', async ()=>{
+    const file = photoFileInput.files[0];
+    if(!file) return;
+    photoPreviewWrap.innerHTML = '<span style="font-size:0.8rem; color:#6B5F49;">Bild wird verarbeitet...</span>';
+    try{
+      uploadedPhotoData = await compressImage(file);
+      photoPreviewWrap.innerHTML = '<img class="photo-preview" src="'+uploadedPhotoData+'">';
+    }catch(e){
+      photoPreviewWrap.innerHTML = '<span style="font-size:0.8rem; color:#8A2E2E;">Bild konnte nicht verarbeitet werden.</span>';
+      uploadedPhotoData = '';
+    }
+  });
+
+  // ---- Demo-Accounts, damit direkt Profile zum Testen vorhanden sind ----
+  const demoAccounts = [
+    {username:'kilian_m', password:'zugverspaetung', name:'Kilian', age:29, gender:'Mann', interestedIn:'Frauen', bio:'Verpasst selten den Zug, aber immer den richtigen Moment für einen Kommentar.'},
+    {username:'alice_w', password:'ladekabel', name:'Alice', age:27, gender:'Frau', interestedIn:'Männer', bio:'Sammelt halbfertige Gedanken und Bahnhofskaffee.'},
+    {username:'jonas_k', password:'abteil14', name:'Jonas', age:31, gender:'Mann', interestedIn:'Männer', bio:'Setzt sich am liebsten ans Fenster, redet aber lieber mit dem Gegenüber.'},
+    {username:'mira_t', password:'gleis7', name:'Mira', age:26, gender:'Frau', interestedIn:'Frauen', bio:'Liest im Zug immer das gleiche Buch — noch nie zu Ende.'},
+    {username:'sam_r', password:'fahrschein', name:'Sam', age:24, gender:'Divers', interestedIn:'Alle', bio:'Offen für spontane Umstiege und lange Gespräche.'}
+  ];
+
+  async function seedDemoAccounts(){
+    for(const d of demoAccounts){
+      const existing = await getJSON('account:'+d.username, true);
+      if(existing) continue;
+      await setJSON('account:'+d.username, {
+        password: d.password,
+        profile: {name:d.name, age:d.age, gender:d.gender, interestedIn:d.interestedIn, bio:d.bio, photoUrl:''},
+        likes: [],
+        passes: []
+      }, true);
+    }
+  }
+
+  // ---- state ----
+  let currentUser = null;
+  let pendingAccount = null;
+  let allAccounts = [];
+  let queue = [];
+  let activeFilter = 'Alle';
+
+  // ---- elements ----
+  const authScreen = document.getElementById('authScreen');
+  const profileForm = document.getElementById('profileForm');
+  const appScreen = document.getElementById('appScreen');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const authTabs = document.getElementById('authTabs');
+  const deck = document.getElementById('deck');
+  const filterRow = document.getElementById('filterRow');
+  const matchesList = document.getElementById('matchesList');
+  const whoUser = document.getElementById('whoUser');
+  const matchModal = document.getElementById('matchModal');
+
+  authTabs.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    [...authTabs.children].forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    if(btn.dataset.tab === 'login'){
+      loginForm.hidden = false; registerForm.hidden = true;
+    }else{
+      loginForm.hidden = true; registerForm.hidden = false;
+    }
+  });
+
+  loginForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const u = document.getElementById('loginUsername').value.trim();
+    const p = document.getElementById('loginPassword').value;
+    const errEl = document.getElementById('loginError');
+    errEl.textContent = '';
+    const account = await getJSON('account:'+u, true);
+    if(!account || account.password !== p){
+      errEl.textContent = 'Benutzername oder Passwort ist falsch.';
+      return;
+    }
+    currentUser = u;
+    await setJSON('session_user', u, false);
+    if(!account.profile){
+      pendingAccount = {username:u, password:p};
+      showProfileForm();
+    }else{
+      await startApp();
+    }
+  });
+
+  registerForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const u = document.getElementById('regUsername').value.trim();
+    const p = document.getElementById('regPassword').value;
+    const errEl = document.getElementById('regError');
+    errEl.textContent = '';
+    if(u.length < 3){ errEl.textContent = 'Benutzername muss mindestens 3 Zeichen haben.'; return; }
+    const existing = await getJSON('account:'+u, true);
+    if(existing){ errEl.textContent = 'Dieser Benutzername ist schon vergeben.'; return; }
+    pendingAccount = {username:u, password:p};
+    showProfileForm();
+  });
+
+  function showProfileForm(){
+    authScreen.hidden = true;
+    profileForm.hidden = false;
+  }
+
+  profileForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const errEl = document.getElementById('profileError');
+    errEl.textContent = '';
+    const name = document.getElementById('pName').value.trim();
+    const age = parseInt(document.getElementById('pAge').value, 10);
+    const gender = document.getElementById('pGender').value;
+    const interestedIn = document.getElementById('pInterest').value;
+    const bio = document.getElementById('pBio').value.trim();
+    const photoUrl = uploadedPhotoData || document.getElementById('pPhoto').value.trim();
+
+    if(!name || !age || age < 18){
+      errEl.textContent = 'Bitte Name und ein gültiges Alter (18+) angeben.';
+      return;
+    }
+
+    const account = {
+      password: pendingAccount.password,
+      profile: {name, age, gender, interestedIn, bio, photoUrl},
+      likes: [],
+      passes: []
+    };
+    const saved = await setJSON('account:'+pendingAccount.username, account, true);
+    if(!saved){
+      errEl.textContent = 'Profil konnte nicht gespeichert werden. Bitte erneut versuchen.';
+      return;
+    }
+    currentUser = pendingAccount.username;
+    await setJSON('session_user', currentUser, false);
+    profileForm.hidden = true;
+    await startApp();
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+    currentUser = null;
+    await delKey('session_user', false);
+    appScreen.hidden = true;
+    authScreen.hidden = false;
+    loginForm.reset();
+    registerForm.reset();
+  });
+
+  filterRow.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    [...filterRow.children].forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    buildQueue();
+    renderCard();
+  });
+
+  document.getElementById('matchCloseBtn').addEventListener('click', ()=>{
+    matchModal.hidden = true;
+  });
+
+  async function startApp(){
+    authScreen.hidden = true;
+    profileForm.hidden = true;
+    appScreen.hidden = false;
+    whoUser.textContent = currentUser;
+    deck.innerHTML = '<div class="empty-state">Suche nach Mitreisenden...</div>';
+    allAccounts = await listAccounts();
+    buildQueue();
+    renderCard();
+    renderMatches();
+  }
+
+  function currentAccount(){
+    return allAccounts.find(a=>a.username === currentUser);
+  }
+
+  function buildQueue(){
+    const me = currentAccount();
+    if(!me || !me.profile){ queue = []; return; }
+    queue = allAccounts.filter(a=>{
+      if(a.username === currentUser) return false;
+      if(!a.profile) return false;
+      if((me.likes||[]).includes(a.username)) return false;
+      if((me.passes||[]).includes(a.username)) return false;
+      if(!mutualRelevant(me.profile, a.profile)) return false;
+      if(activeFilter !== 'Alle' && orientationCategory(a.profile) !== activeFilter) return false;
+      return true;
+    });
+  }
+
+  function renderCard(){
+    if(!queue.length){
+      deck.innerHTML = '<div class="empty-state">Keine weiteren Profile für diesen Filter — schau später nochmal vorbei.</div>';
+      return;
+    }
+    const cand = queue[0];
+    const p = cand.profile;
+    deck.innerHTML =
+      '<div class="swipe-card">' +
+        '<div class="swipe-photo">'+avatarHTML(p)+'</div>' +
+        '<div class="swipe-info">' +
+          '<span class="cat">'+orientationCategory(p)+'</span>' +
+          '<h3>'+escapeHTML(p.name)+', '+escapeHTML(p.age)+'</h3>' +
+          '<p>'+escapeHTML(p.bio || 'Noch keine Bio hinterlegt.')+'</p>' +
+        '</div>' +
+      '</div>' +
+      '<div class="swipe-actions">' +
+        '<button type="button" class="pass" id="passBtn" aria-label="Nicht interessiert">✕</button>' +
+        '<button type="button" class="like" id="likeBtn" aria-label="Gefällt mir">♥</button>' +
+      '</div>';
+    document.getElementById('passBtn').addEventListener('click', ()=>swipe('pass'));
+    document.getElementById('likeBtn').addEventListener('click', ()=>swipe('like'));
+  }
+
+  async function swipe(action){
+    if(!queue.length) return;
+    const cand = queue[0];
+    const me = currentAccount();
+    me.likes = me.likes || [];
+    me.passes = me.passes || [];
+    if(action === 'pass'){
+      me.passes.push(cand.username);
+    }else{
+      me.likes.push(cand.username);
+    }
+    await setJSON('account:'+currentUser, {password:me.password, profile:me.profile, likes:me.likes, passes:me.passes}, true);
+
+    if(action === 'like'){
+      const freshCandidate = await getJSON('account:'+cand.username, true);
+      if(freshCandidate && (freshCandidate.likes||[]).includes(currentUser)){
+        showMatch(me, cand);
+      }
+    }
+
+    queue.shift();
+    renderCard();
+    renderMatches();
+  }
+
+  function showMatch(me, cand){
+    const container = document.getElementById('matchAvatars');
+    container.innerHTML =
+      '<div class="av">'+avatarHTML(me.profile)+'</div>' +
+      '<div class="av">'+avatarHTML(cand.profile)+'</div>';
+    document.getElementById('matchSubtitle').textContent = (me.profile.name||'')+' & '+(cand.profile.name||'')+' teilen sich jetzt ein Abteil.';
+    matchModal.hidden = false;
+  }
+
+  function renderMatches(){
+    const me = currentAccount();
+    if(!me){ matchesList.innerHTML = ''; return; }
+    const mutual = (me.likes||[]).filter(u=>{
+      const acc = allAccounts.find(a=>a.username === u);
+      return acc && (acc.likes||[]).includes(currentUser);
+    });
+    if(!mutual.length){
+      matchesList.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">Noch keine Matches. Weiterswipen!</div>';
+      return;
+    }
+    matchesList.innerHTML = mutual.map(u=>{
+      const acc = allAccounts.find(a=>a.username===u);
+      return '<div class="match-chip">'+avatarHTML(acc.profile)+'<span>'+escapeHTML(acc.profile.name)+'</span></div>';
+    }).join('');
+  }
+
+  // ---- init: Demo-Accounts anlegen, dann Session wiederherstellen ----
+  (async function init(){
+    await seedDemoAccounts();
+    const savedUser = await getJSON('session_user', false);
+    if(savedUser){
+      const account = await getJSON('account:'+savedUser, true);
+      if(account){
+        currentUser = savedUser;
+        if(!account.profile){
+          pendingAccount = {username:savedUser, password:account.password};
+          showProfileForm();
+        }else{
+          await startApp();
+        }
+      }
+    }
+  })();
+})();
+</script>
 
 </body>
 </html>
