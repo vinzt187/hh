@@ -532,6 +532,86 @@
   .match-avatars .av:first-child{margin-left:0;}
   .match-avatars .av .avatar-fallback{font-size:2rem;}
 
+  .match-chip{cursor:pointer; transition:transform .15s;}
+  .match-chip:hover{transform:translateY(-2px);}
+
+  .chat-modal{
+    background:var(--paper);
+    border-radius:10px;
+    max-width:420px;
+    width:100%;
+    max-height:80vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .chat-header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 20px;
+    border-bottom:1px solid var(--line);
+  }
+  .chat-header h3{font-size:1.1rem;}
+  .chat-header button{
+    background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--ink);
+  }
+  .chat-messages{
+    flex:1;
+    overflow-y:auto;
+    padding:18px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    min-height:220px;
+  }
+  .chat-bubble{
+    max-width:75%;
+    padding:9px 14px;
+    border-radius:14px;
+    font-size:0.9rem;
+    line-height:1.4;
+  }
+  .chat-bubble.mine{
+    align-self:flex-end;
+    background:var(--wine);
+    color:var(--paper);
+    border-bottom-right-radius:4px;
+  }
+  .chat-bubble.theirs{
+    align-self:flex-start;
+    background:var(--blush);
+    color:var(--ink);
+    border-bottom-left-radius:4px;
+  }
+  .chat-empty{
+    text-align:center;
+    color:#8B7F68;
+    font-family:'Space Mono', monospace;
+    font-size:0.78rem;
+    margin:auto;
+  }
+  .chat-input-row{
+    display:flex; gap:8px;
+    padding:14px 16px;
+    border-top:1px solid var(--line);
+  }
+  .chat-input-row input{
+    flex:1;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    font-family:'Work Sans', sans-serif;
+    font-size:0.9rem;
+  }
+  .chat-input-row button{
+    background:var(--wine);
+    color:var(--paper);
+    border:none;
+    border-radius:50%;
+    width:40px; height:40px;
+    cursor:pointer;
+    font-size:1rem;
+  }
+
   @media (prefers-reduced-motion: no-preference){
     .fade-up{
       opacity:0;
@@ -771,8 +851,6 @@
       <h2>Finde deine Verbindung</h2>
     </div>
 
-    <div class="notice" id="storageNotice">Demo-Hinweis: Das ist ein Prototyp ohne echtes Server-Backend. Accounts, Profile und hochgeladene Fotos werden im Speicher dieses Artefakts abgelegt und sind für alle Besucher:innen dieser Seite sichtbar. Bitte keine echten Passwörter oder privaten Fotos verwenden.<br><br>Zum sofortigen Ausprobieren sind fünf Test-Accounts vorangelegt, z.&nbsp;B. <strong>kilian_m</strong> / <strong>zugverspaetung</strong> oder <strong>alice_w</strong> / <strong>ladekabel</strong> (weitere: jonas_k/abteil14, mira_t/gleis7, sam_r/fahrschein).</div>
-
     <div id="authScreen">
       <div class="tabs" id="authTabs">
         <button type="button" class="active" data-tab="login">Anmelden</button>
@@ -880,6 +958,20 @@
     <h2>Anschluss gefunden!</h2>
     <div class="subtitle" id="matchSubtitle"></div>
     <button type="button" class="btn" id="matchCloseBtn">Weiterfahren</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="chatModal" hidden>
+  <div class="chat-modal">
+    <div class="chat-header">
+      <h3 id="chatWithName">Chat</h3>
+      <button type="button" id="chatCloseBtn" aria-label="Schließen">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <form class="chat-input-row" id="chatForm">
+      <input type="text" id="chatInput" placeholder="Nachricht schreiben..." autocomplete="off" maxlength="500">
+      <button type="submit" aria-label="Senden">➤</button>
+    </form>
   </div>
 </div>
 
@@ -998,10 +1090,46 @@
       return Object.keys(all).map(u=>Object.assign({username:u}, all[u]));
     }
   };
+  window.__messagesAPI = {
+    async list(matchKey){
+      if(supabaseClient){
+        try{
+          const {data, error} = await supabaseClient
+            .from('messages')
+            .select('*')
+            .eq('match_key', matchKey)
+            .order('created_at', {ascending:true});
+          if(error){ console.error('Supabase-Chat-Lesefehler', error); return []; }
+          return data || [];
+        }catch(e){ console.error('Supabase-Chat-Lesefehler', e); return []; }
+      }
+      try{
+        const all = JSON.parse(localStorage.getItem('__messages__') || '{}');
+        return all[matchKey] || [];
+      }catch(e){ return []; }
+    },
+    async send(matchKey, sender, content){
+      if(supabaseClient){
+        try{
+          const {error} = await supabaseClient.from('messages').insert({match_key:matchKey, sender, content});
+          if(error){ console.error('Supabase-Chat-Schreibfehler', error); return false; }
+          return true;
+        }catch(e){ console.error('Supabase-Chat-Schreibfehler', e); return false; }
+      }
+      try{
+        const all = JSON.parse(localStorage.getItem('__messages__') || '{}');
+        all[matchKey] = all[matchKey] || [];
+        all[matchKey].push({match_key:matchKey, sender, content, created_at:new Date().toISOString()});
+        localStorage.setItem('__messages__', JSON.stringify(all));
+        return true;
+      }catch(e){ return false; }
+    }
+  };
 })();
 
 (function(){
   const accountsAPI = window.__accountsAPI;
+  const messagesAPI = window.__messagesAPI;
   const palette = ['#B9707C','#A9803F','#63273A','#3A3F52','#8A6E9E'];
 
   window.__avatarFallback = function(imgEl){
@@ -1251,6 +1379,7 @@
   document.getElementById('logoutBtn').addEventListener('click', async ()=>{
     currentUser = null;
     clearSessionUser();
+    closeChat();
     appScreen.hidden = true;
     authScreen.hidden = false;
     loginForm.reset();
@@ -1373,16 +1502,73 @@
     }
     matchesList.innerHTML = mutual.map(u=>{
       const acc = allAccounts.find(a=>a.username===u);
-      return '<div class="match-chip">'+avatarHTML(acc.profile)+'<span>'+escapeHTML(acc.profile.name)+'</span></div>';
+      return '<div class="match-chip" data-username="'+escapeAttr(u)+'">'+avatarHTML(acc.profile)+'<span>'+escapeHTML(acc.profile.name)+'</span></div>';
     }).join('');
+    [...matchesList.querySelectorAll('.match-chip')].forEach(chip=>{
+      chip.addEventListener('click', ()=> openChat(chip.dataset.username));
+    });
   }
+
+  // ---- Chat zwischen Matches ----
+  const chatModal = document.getElementById('chatModal');
+  const chatMessages = document.getElementById('chatMessages');
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+  const chatWithName = document.getElementById('chatWithName');
+  let chatWithUser = null;
+  let chatPollTimer = null;
+
+  function matchKeyFor(a, b){
+    return [a, b].sort().join('__');
+  }
+
+  async function renderChatMessages(){
+    if(!chatWithUser) return;
+    const key = matchKeyFor(currentUser, chatWithUser);
+    const msgs = await messagesAPI.list(key);
+    if(!msgs.length){
+      chatMessages.innerHTML = '<div class="chat-empty">Noch keine Nachrichten. Schreib die erste!</div>';
+      return;
+    }
+    chatMessages.innerHTML = msgs.map(m=>{
+      const mine = m.sender === currentUser;
+      return '<div class="chat-bubble '+(mine ? 'mine' : 'theirs')+'">'+escapeHTML(m.content)+'</div>';
+    }).join('');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  async function openChat(otherUsername){
+    chatWithUser = otherUsername;
+    const acc = allAccounts.find(a=>a.username === otherUsername);
+    chatWithName.textContent = acc && acc.profile ? acc.profile.name : otherUsername;
+    chatModal.hidden = false;
+    chatInput.value = '';
+    await renderChatMessages();
+    if(chatPollTimer) clearInterval(chatPollTimer);
+    chatPollTimer = setInterval(renderChatMessages, 4000);
+    chatInput.focus();
+  }
+
+  function closeChat(){
+    chatModal.hidden = true;
+    chatWithUser = null;
+    if(chatPollTimer){ clearInterval(chatPollTimer); chatPollTimer = null; }
+  }
+
+  document.getElementById('chatCloseBtn').addEventListener('click', closeChat);
+
+  chatForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const text = chatInput.value.trim();
+    if(!text || !chatWithUser) return;
+    chatInput.value = '';
+    const key = matchKeyFor(currentUser, chatWithUser);
+    await messagesAPI.send(key, currentUser, text);
+    await renderChatMessages();
+  });
 
   // ---- init: Demo-Accounts anlegen, dann Session wiederherstellen ----
   (async function init(){
-    if(window.__usingLocalFallback){
-      const n = document.getElementById('storageNotice');
-      n.innerHTML += '<br><br><strong>Hinweis:</strong> Es ist noch keine Supabase-Konfiguration eingetragen (siehe Kommentar am Anfang des &lt;script&gt;-Tags). Accounts werden deshalb nur lokal in diesem Browser gespeichert, nicht geteilt zwischen verschiedenen Besucher:innen.';
-    }
     await seedDemoAccounts();
     const savedUser = getSessionUser();
     if(savedUser){
