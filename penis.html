@@ -6,6 +6,7 @@
 <title>Kilian &amp; Alice — Abteil 14</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <style>
   :root{
     --ink:#22283A;
@@ -884,49 +885,123 @@
 
 <script>
 (function(){
-  // Bevorzugt den Artefakt-Speicher (window.storage). Ist die Seite als eigenständige
-  // HTML-Datei geöffnet (z.B. per Doppelklick), existiert dieser nicht — dann wird
-  // automatisch auf localStorage im Browser umgeschaltet, damit Accounts trotzdem
-  // gespeichert werden (lokal auf diesem Gerät, nicht geräteübergreifend geteilt).
-  function scopeKey(key, shared){ return (shared ? 'shared::' : 'personal::') + key; }
-  function indexKey(shared){ return '__index__' + (shared ? 'shared' : 'personal'); }
-  function readIndex(shared){
-    try{ return JSON.parse(localStorage.getItem(indexKey(shared)) || '[]'); }
-    catch(e){ return []; }
-  }
-  function writeIndex(shared, idx){
-    localStorage.setItem(indexKey(shared), JSON.stringify(idx));
-  }
-  async function lsGet(key, shared){
-    const raw = localStorage.getItem(scopeKey(key, shared));
-    if(raw === null) throw new Error('not found');
-    return {key, value: raw, shared: !!shared};
-  }
-  async function lsSet(key, value, shared){
-    localStorage.setItem(scopeKey(key, shared), value);
-    const idx = readIndex(shared);
-    if(!idx.includes(key)){ idx.push(key); writeIndex(shared, idx); }
-    return {key, value, shared: !!shared};
-  }
-  async function lsDelete(key, shared){
-    localStorage.removeItem(scopeKey(key, shared));
-    const idx = readIndex(shared).filter(k=>k!==key);
-    writeIndex(shared, idx);
-    return {key, deleted:true, shared: !!shared};
-  }
-  async function lsList(prefix, shared){
-    const idx = readIndex(shared);
-    const keys = prefix ? idx.filter(k=>k.startsWith(prefix)) : idx;
-    return {keys, prefix, shared: !!shared};
+  // ============================================================
+  // HIER DEINE SUPABASE-ZUGANGSDATEN EINTRAGEN
+  // ============================================================
+  // 1. Gehe zu https://supabase.com, erstelle kostenlos ein Konto
+  //    und ein neues Projekt.
+  // 2. Öffne dort links "SQL Editor" -> "New query" und führe genau
+  //    dieses SQL einmal aus, um die Tabelle anzulegen:
+  //
+  //    create table accounts (
+  //      username text primary key,
+  //      password text not null,
+  //      profile jsonb,
+  //      likes jsonb default '[]'::jsonb,
+  //      passes jsonb default '[]'::jsonb
+  //    );
+  //
+  //    alter table accounts enable row level security;
+  //
+  //    create policy "Demo: alle duerfen lesen und schreiben"
+  //      on accounts for all
+  //      using (true)
+  //      with check (true);
+  //
+  //    (Hinweis: Diese Policy macht die Tabelle komplett offen —
+  //    passend für diesen Demo-Prototyp ohne echte Nutzer-Authentifizierung.
+  //    Für eine echte App später über Supabase Auth + strengere Policies
+  //    absichern.)
+  //
+  // 3. Gehe zu Projekteinstellungen -> "API". Dort findest du:
+  //    - "Project URL"      -> unten bei SUPABASE_URL eintragen
+  //    - "anon public" Key  -> unten bei SUPABASE_ANON_KEY eintragen
+  const SUPABASE_URL = "https://xrkukzbtmennngwzwsre.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhya3VremJ0bWVubm5nd3p3c3JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzMTU0OTksImV4cCI6MjEwNDg5MTQ5OX0.vtreiD9xCPeeySNwG6H4ZuF_YgW8jSMdpcnvKY1GpFU";
+  // ============================================================
+  // Solange oben noch die Platzhalter stehen, läuft die Seite automatisch
+  // im lokalen Testmodus (nur in diesem Browser sichtbar). Sobald echte
+  // Werte eingetragen sind, werden Accounts/Fotos/Matches über Supabase
+  // geteilt gespeichert — dann funktioniert es auch gehostet auf GitHub
+  // Pages mit mehreren echten Nutzer:innen.
+
+  const isConfigured = SUPABASE_URL && SUPABASE_URL.indexOf('DEINE') !== 0
+    && SUPABASE_ANON_KEY && SUPABASE_ANON_KEY.indexOf('DEIN') !== 0;
+  window.__usingLocalFallback = !isConfigured;
+
+  let supabaseClient = null;
+  if(isConfigured){
+    try{
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }catch(e){
+      console.error('Supabase-Init fehlgeschlagen, nutze lokalen Speicher.', e);
+      window.__usingLocalFallback = true;
+    }
   }
 
-  const hasArtifactStorage = !!(window.storage && typeof window.storage.get === 'function');
-  window.__DB = hasArtifactStorage ? window.storage : {get:lsGet, set:lsSet, delete:lsDelete, list:lsList};
-  window.__usingLocalFallback = !hasArtifactStorage;
+  // ---- Fallback: lokale Konten im Browser (localStorage), falls kein Supabase ----
+  function lsListAccounts(){
+    try{ return JSON.parse(localStorage.getItem('__accounts__') || '{}'); }
+    catch(e){ return {}; }
+  }
+  function lsSaveAccounts(obj){
+    localStorage.setItem('__accounts__', JSON.stringify(obj));
+  }
+
+  window.__accountsAPI = {
+    async get(username){
+      if(supabaseClient){
+        try{
+          const {data, error} = await supabaseClient.from('accounts').select('*').eq('username', username).maybeSingle();
+          if(error){ console.error('Supabase-Lesefehler', error); return null; }
+          if(!data) return null;
+          return {password: data.password, profile: data.profile, likes: data.likes || [], passes: data.passes || []};
+        }catch(e){ console.error('Supabase-Lesefehler', e); return null; }
+      }
+      const all = lsListAccounts();
+      return all[username] || null;
+    },
+    async set(username, data){
+      if(supabaseClient){
+        try{
+          const {error} = await supabaseClient.from('accounts').upsert({
+            username,
+            password: data.password,
+            profile: data.profile,
+            likes: data.likes || [],
+            passes: data.passes || []
+          });
+          if(error){ console.error('Supabase-Schreibfehler', error); return false; }
+          return true;
+        }catch(e){ console.error('Supabase-Schreibfehler', e); return false; }
+      }
+      const all = lsListAccounts();
+      all[username] = data;
+      lsSaveAccounts(all);
+      return true;
+    },
+    async list(){
+      if(supabaseClient){
+        try{
+          const {data, error} = await supabaseClient.from('accounts').select('*');
+          if(error){ console.error('Supabase-Listenfehler', error); return []; }
+          return (data || []).map(row => ({
+            username: row.username,
+            password: row.password,
+            profile: row.profile,
+            likes: row.likes || [],
+            passes: row.passes || []
+          }));
+        }catch(e){ console.error('Supabase-Listenfehler', e); return []; }
+      }
+      const all = lsListAccounts();
+      return Object.keys(all).map(u=>Object.assign({username:u}, all[u]));
+    }
+  };
 })();
 
 (function(){
-  const DB = window.__DB;
+  const accountsAPI = window.__accountsAPI;
   const palette = ['#B9707C','#A9803F','#63273A','#3A3F52','#8A6E9E'];
 
   window.__avatarFallback = function(imgEl){
@@ -954,32 +1029,26 @@
     return String(str).replace(/"/g, '&quot;');
   }
 
-  async function getJSON(key, shared){
-    try{
-      const r = await DB.get(key, shared);
-      return r ? JSON.parse(r.value) : null;
-    }catch(e){ return null; }
+  async function getAccount(username){
+    try{ return await accountsAPI.get(username); }
+    catch(e){ console.error('Konto-Lesefehler', e); return null; }
   }
-  async function setJSON(key, value, shared){
-    try{
-      return await DB.set(key, JSON.stringify(value), shared);
-    }catch(e){ console.error('Storage-Fehler', e); return null; }
+  async function saveAccount(username, data){
+    try{ return await accountsAPI.set(username, data); }
+    catch(e){ console.error('Konto-Schreibfehler', e); return false; }
   }
-  async function delKey(key, shared){
-    try{ return await DB.delete(key, shared); }catch(e){ return null; }
-  }
-
   async function listAccounts(){
-    try{
-      const res = await DB.list('account:', true);
-      if(!res || !res.keys) return [];
-      const out = [];
-      for(const k of res.keys){
-        const data = await getJSON(k, true);
-        if(data){ out.push(Object.assign({username:k.slice('account:'.length)}, data)); }
-      }
-      return out;
-    }catch(e){ console.error(e); return []; }
+    try{ return await accountsAPI.list(); }
+    catch(e){ console.error('Konto-Listenfehler', e); return []; }
+  }
+  function getSessionUser(){
+    try{ return localStorage.getItem('session_user'); }catch(e){ return null; }
+  }
+  function setSessionUser(u){
+    try{ localStorage.setItem('session_user', u); }catch(e){}
+  }
+  function clearSessionUser(){
+    try{ localStorage.removeItem('session_user'); }catch(e){}
   }
 
   function orientationCategory(p){
@@ -1064,14 +1133,14 @@
 
   async function seedDemoAccounts(){
     for(const d of demoAccounts){
-      const existing = await getJSON('account:'+d.username, true);
+      const existing = await getAccount(d.username);
       if(existing) continue;
-      await setJSON('account:'+d.username, {
+      await saveAccount(d.username, {
         password: d.password,
         profile: {name:d.name, age:d.age, gender:d.gender, interestedIn:d.interestedIn, bio:d.bio, photoUrl:''},
         likes: [],
         passes: []
-      }, true);
+      });
     }
   }
 
@@ -1113,13 +1182,13 @@
     const p = document.getElementById('loginPassword').value;
     const errEl = document.getElementById('loginError');
     errEl.textContent = '';
-    const account = await getJSON('account:'+u, true);
+    const account = await getAccount(u);
     if(!account || account.password !== p){
       errEl.textContent = 'Benutzername oder Passwort ist falsch.';
       return;
     }
     currentUser = u;
-    await setJSON('session_user', u, false);
+    setSessionUser(u);
     if(!account.profile){
       pendingAccount = {username:u, password:p};
       showProfileForm();
@@ -1135,7 +1204,7 @@
     const errEl = document.getElementById('regError');
     errEl.textContent = '';
     if(u.length < 3){ errEl.textContent = 'Benutzername muss mindestens 3 Zeichen haben.'; return; }
-    const existing = await getJSON('account:'+u, true);
+    const existing = await getAccount(u);
     if(existing){ errEl.textContent = 'Dieser Benutzername ist schon vergeben.'; return; }
     pendingAccount = {username:u, password:p};
     showProfileForm();
@@ -1168,20 +1237,20 @@
       likes: [],
       passes: []
     };
-    const saved = await setJSON('account:'+pendingAccount.username, account, true);
+    const saved = await saveAccount(pendingAccount.username, account);
     if(!saved){
       errEl.textContent = 'Profil konnte nicht gespeichert werden. Bitte erneut versuchen.';
       return;
     }
     currentUser = pendingAccount.username;
-    await setJSON('session_user', currentUser, false);
+    setSessionUser(currentUser);
     profileForm.hidden = true;
     await startApp();
   });
 
   document.getElementById('logoutBtn').addEventListener('click', async ()=>{
     currentUser = null;
-    await delKey('session_user', false);
+    clearSessionUser();
     appScreen.hidden = true;
     authScreen.hidden = false;
     loginForm.reset();
@@ -1212,6 +1281,7 @@
     buildQueue();
     renderCard();
     renderMatches();
+    appScreen.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
   function currentAccount(){
@@ -1267,10 +1337,10 @@
     }else{
       me.likes.push(cand.username);
     }
-    await setJSON('account:'+currentUser, {password:me.password, profile:me.profile, likes:me.likes, passes:me.passes}, true);
+    await saveAccount(currentUser, {password:me.password, profile:me.profile, likes:me.likes, passes:me.passes});
 
     if(action === 'like'){
-      const freshCandidate = await getJSON('account:'+cand.username, true);
+      const freshCandidate = await getAccount(cand.username);
       if(freshCandidate && (freshCandidate.likes||[]).includes(currentUser)){
         showMatch(me, cand);
       }
@@ -1311,12 +1381,12 @@
   (async function init(){
     if(window.__usingLocalFallback){
       const n = document.getElementById('storageNotice');
-      n.innerHTML += '<br><br><strong>Hinweis:</strong> Diese Seite läuft gerade außerhalb des Claude-Artefakt-Speichers, daher werden Accounts stattdessen lokal im Speicher dieses Browsers abgelegt (nur auf diesem Gerät, nicht geräteübergreifend geteilt).';
+      n.innerHTML += '<br><br><strong>Hinweis:</strong> Es ist noch keine Supabase-Konfiguration eingetragen (siehe Kommentar am Anfang des &lt;script&gt;-Tags). Accounts werden deshalb nur lokal in diesem Browser gespeichert, nicht geteilt zwischen verschiedenen Besucher:innen.';
     }
     await seedDemoAccounts();
-    const savedUser = await getJSON('session_user', false);
+    const savedUser = getSessionUser();
     if(savedUser){
-      const account = await getJSON('account:'+savedUser, true);
+      const account = await getAccount(savedUser);
       if(account){
         currentUser = savedUser;
         if(!account.profile){
